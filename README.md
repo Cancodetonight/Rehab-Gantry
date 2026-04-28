@@ -28,6 +28,22 @@ A 3-axis Cartesian robotic gantry system designed for upper-limb motor rehabilit
 * **Embedded C**: Manages the 1ms physics interrupts, limit switch debouncing, and hardware constraints.
 * **Python (Pygame)**: Renders 60FPS modern, medical-grade UI with dynamic backgrounds, fluid state transitions, and real-time telemetry plotting.
 
+## 📂 Key Source Files
+
+### Firmware (STM32)
+* `RehabGantryApp/__STM_Test_File__/Core/Src/main.c`: The core admittance controller and 1kHz physics engine. Handles UART comms and axis kinematics.
+* `RehabGantryApp/__STM_Test_File__/Core/Src/force.c`: Manages the 4-cell load matrix, 24-bit integer unwrapping, and 3x4 decoupling logic.
+* `RehabGantryApp/__STM_Test_File__/Core/Src/motors.c`: Low-level timer and GPIO setup for the stepper motor drivers.
+
+### Standalone Hardware Tests
+* `RehabGantryApp/__STM_Test_File__/force_test.py`: Standalone script for reading and calibrating raw sensor values.
+* `RehabGantryApp/__STM_Test_File__/motor_test.py`: Standalone script for testing XYZ stepper movement and homing logic.
+
+### Python UI & Game Logic
+* `RehabGantryApp/main.py`: The entry point for the Pygame application, managing UI states, menus, and safety modals.
+* `RehabGantryApp/core/serial_manager.py`: The multithreaded serial handler enforcing the strict `<TGT...>` UART protocol.
+* `RehabGantryApp/games/`: Directory containing specific therapeutic game logic (`target_reaching_game.py`, `xz_maze_game.py`, `yz_crane_game.py`).
+
 ## ⚙️ Physics Implementation
 
 The system deliberately avoids traditional Mass-Spring-Damper impedance models used in collaborative robots to prevent inertia-driven injuries. The physics engine in `main.c` executes:
