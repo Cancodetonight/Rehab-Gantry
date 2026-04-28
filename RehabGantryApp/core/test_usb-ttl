@@ -1,0 +1,42 @@
+import serial
+import time
+
+# CHANGE THIS TO YOUR ACTUAL COM PORT (e.g., 'COM5')
+COM_PORT = 'COM5'
+BAUD_RATE = 115200
+
+def main():
+    print(f"Connecting to STM32 on {COM_PORT}...")
+    
+    try:
+        # Open the serial connection
+        stm32 = serial.Serial(COM_PORT, BAUD_RATE, timeout=1)
+        time.sleep(2) # Give it a second to initialize
+        print("Connected! Ready to send commands.")
+        print("Type '1' to turn Relay ON.")
+        print("Type '0' to turn Relay OFF.")
+        print("Type 'q' to quit.\n")
+
+        while True:
+            user_input = input("Enter command: ").strip()
+            
+            if user_input == 'q':
+                print("Exiting...")
+                break
+            
+            if user_input in ['0', '1']:
+                # Send the character encoded as bytes
+                stm32.write(user_input.encode('utf-8'))
+                print(f"Sent: {user_input}")
+            else:
+                print("Invalid command. Please enter 1, 0, or q.")
+
+    except serial.SerialException as e:
+        print(f"Error opening serial port: {e}")
+        print("Is the CP2102 plugged in? Is the COM port correct?")
+    finally:
+        if 'stm32' in locals() and stm32.is_open:
+            stm32.close()
+
+if __name__ == '__main__':
+    main()

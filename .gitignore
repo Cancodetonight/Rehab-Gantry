@@ -1,0 +1,6 @@
+venv/
+__pycache__/
+*.pyc
+.DS_Store
+RehabGantryApp/__STM_Test_File__/Debug/
+RehabGantryApp/__STM_Test_File__/Release/
